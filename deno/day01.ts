@@ -25,8 +25,6 @@ export class Day implements DaySolution<[number[], number[]], number> {
   part1 = (input: [number[], number[]]) =>  {
     const left = [...input[0]].sort();
     const right = [...input[1]].sort();
-    console.log(left.slice(0, 10));
-    console.log(right.slice(0, 10));
     let res = 0;
     for (let i = 0; i < left.length; i++) {
       res += Math.abs(left[i] - right[i]);

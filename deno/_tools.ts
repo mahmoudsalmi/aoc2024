@@ -1,4 +1,4 @@
-export const lang = "deno-ts";
+export const lang = "[deno-ts]";
 
 export function parseExempleData(day: number): string {
   return Deno.readTextFileSync(
@@ -55,7 +55,7 @@ export function daySolution<I, O>(
   // "----(AOC2023 - Day 02)------------------------[Rust]----
   let res = `----(AOC${year} - Day ${
     String(day).padStart(2, "0")
-  })-------------------${("[" + lang + "]").padStart(15, "-")}----\n`;
+  })-------------------${lang.padStart(15, "-")}----\n`;
   res += new SolutionResult("Example", "Part 1", part1).exec(example) + "\n";
   res += new SolutionResult("Example", "Part 2", part2).exec(example) + "\n";
   res += separator + "\n";
