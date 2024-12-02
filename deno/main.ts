@@ -1,21 +1,35 @@
-import {daySolution, writeResult} from './_tools.ts';
+import { DaySolution, daySolution, writeResult } from "./_tools.ts";
+import { Day01 } from "./day01.ts";
+import { Day02 } from "./day02.ts";
 
-const year = 2024;
-const lastDay = 1;
+export const YEAR = 2024;
 
-let day = 1;
-while (day <= lastDay) {
-  const dayModule = await import(`./day${String(day).padStart(2, "0")}.ts`);
-  const dayS = new dayModule.Day();
-  const result = daySolution(
-    year,
-    day,
-    dayS.parseData("Example"),
-    dayS.parseData("Input"),
-    dayS.part1,
-    dayS.part2,
-  );
+function getAndStoreResult<I, O>(
+  dayS: DaySolution<I, O>,
+  startDay: number,
+  endDay: number,
+) {
+  if (dayS.day < startDay || dayS.day > endDay) {
+    return;
+  }
+
+  const result = daySolution(dayS);
   console.log(result);
-  writeResult(year, day, result);
-  day++;
+  writeResult(YEAR, startDay, result);
+  startDay++;
+}
+
+if (import.meta.main) {
+  let startDay = 1;
+  let endDay = 25;
+  if (Deno.args.length > 0) {
+    startDay = parseInt(Deno.args[0], 10);
+    endDay = startDay;
+  }
+  if (Deno.args.length > 1) {
+    endDay = parseInt(Deno.args[1], 10);
+  }
+
+  getAndStoreResult(new Day01(), startDay, endDay);
+  getAndStoreResult(new Day02(), startDay, endDay);
 }

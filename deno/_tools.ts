@@ -1,14 +1,16 @@
+import { YEAR } from "./main.ts";
+
 export const lang = "[deno-ts]";
 
 export function parseExempleData(day: number): string {
   return Deno.readTextFileSync(
-    `../data/day${String(day).padStart(2, '0')}-ex.input`
+    `../data/day${String(day).padStart(2, "0")}-ex.input`,
   );
 }
 
 export function parseInputPart1Data(day: number): string {
   return Deno.readTextFileSync(
-    `../data/day${String(day).padStart(2, '0')}-p1.input`
+    `../data/day${String(day).padStart(2, "0")}-p1.input`,
   );
 }
 
@@ -43,28 +45,25 @@ export class SolutionResult<I, O> {
   }
 }
 
-export function daySolution<I, O>(
-  year: number,
-  day: number,
-  example: I,
-  input: I,
-  part1: ((input: I) => O) | null = null,
-  part2: ((input: I) => O) | null = null,
-): string {
+export function daySolution<I, O>(sol: DaySolution<I, O>): string {
   const separator = "-".repeat(60);
-  // "----(AOC2023 - Day 02)------------------------[Rust]----
-  let res = `----(AOC${year} - Day ${
-    String(day).padStart(2, "0")
+
+  const example = sol.parseData("Example");
+  const input = sol.parseData("Input");
+
+  let res = `----(AOC${YEAR} - Day ${
+    String(sol.day).padStart(2, "0")
   })-------------------${lang.padStart(15, "-")}----\n`;
-  res += new SolutionResult("Example", "Part 1", part1).exec(example) + "\n";
-  res += new SolutionResult("Example", "Part 2", part2).exec(example) + "\n";
+  res += new SolutionResult("Example", "Part 1", sol.part1).exec(example) +
+    "\n";
+  res += new SolutionResult("Example", "Part 2", sol.part2).exec(example) +
+    "\n";
   res += separator + "\n";
-  res += new SolutionResult("Input", "Part 1", part1).exec(input) + "\n";
-  res += new SolutionResult("Input", "Part 2", part2).exec(input) + "\n";
+  res += new SolutionResult("Input", "Part 1", sol.part1).exec(input) + "\n";
+  res += new SolutionResult("Input", "Part 2", sol.part2).exec(input) + "\n";
   res += separator + "\n";
   return res;
 }
-
 
 export function writeResult(year: number, day: number, result: string): void {
   Deno.writeTextFileSync(
@@ -74,6 +73,7 @@ export function writeResult(year: number, day: number, result: string): void {
 }
 
 export interface DaySolution<I, O> {
+  day: number;
   parseData: (dataLabel: "Example" | "Input") => I;
   part1: ((input: I) => O) | null;
   part2: ((input: I) => O) | null;
