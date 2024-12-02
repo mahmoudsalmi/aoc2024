@@ -1,9 +1,11 @@
-use crate::day01::Day01Solution;
+use std::env;
 use std::fmt::Display;
+use std::ops::Range;
 use std::time::Instant;
 
-mod day01;
 mod tools;
+mod day01;
+mod day02;
 
 pub trait DaySolution<I, O> {
     fn day(&self) -> u16;
@@ -50,15 +52,29 @@ fn execute_solution<I, O: Display>(data: &I, solution: &Box<dyn DaySolution<I, O
     format!("{} :: {} ====> ({:10.3}ms) {:>20}\n", ex, part, time, solution)
 }
 
-fn main() {
-    let solutions: Vec<Box<dyn DaySolution<_, _>>> = vec![
-        Box::new(Day01Solution {}),
-    ];
-
-    for solution in solutions {
-        let day = solution.day();
-        let result = day_solution(solution);
-        println!("{}", &result);
-        tools::write_to_file(&result, day);
+fn get_and_store_result<I, O: Display>(solution: Box<dyn DaySolution<I, O>>, day_range: Range<u16>) {
+    if !day_range.contains(&solution.day()) {
+        return;
     }
+
+    let day = solution.day();
+    let result = day_solution(solution);
+    println!("{}", &result);
+    tools::write_to_file(&result, day);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut start_day = 1;
+    let mut end_day = 25;
+    if args.len() > 1 {
+        start_day = args[1].parse::<u16>().unwrap();
+        end_day = start_day + 1;
+    }
+    if args.len() > 2 {
+        end_day = args[2].parse::<u16>().unwrap() + 1;
+    }
+    let day_range = start_day..end_day;
+    get_and_store_result(Box::new(day01::Day01Solution {}), day_range.clone());
+    get_and_store_result(Box::new(day02::Day02Solution {}), day_range.clone());
 }
