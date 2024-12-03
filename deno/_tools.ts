@@ -14,6 +14,12 @@ export function parseInputPart1Data(day: number): string {
   );
 }
 
+export function parseData(day: number, dataLabel: "Example" | "Input"): string {
+  return dataLabel === "Example"
+    ? parseExempleData(day)
+    : parseInputPart1Data(day);
+}
+
 export class SolutionResult<I, O> {
   constructor(
     public dataLabel:
