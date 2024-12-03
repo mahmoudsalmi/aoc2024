@@ -21,6 +21,14 @@ pub fn read_input(day: u16) -> String {
     contents
 }
 
+pub fn read_raw_data(day: u16, example: bool) -> String {
+    if example {
+        read_example(day)
+    } else {
+        read_input(day)
+    }
+}
+
 pub fn write_to_file(res: &String, day: u16) {
     let filename = format!("../result/{}-day{:02}-{}.result", YEAR, day, LANG);
     let path = Path::new(&filename);

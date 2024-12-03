@@ -6,6 +6,7 @@ use std::time::Instant;
 mod tools;
 mod day01;
 mod day02;
+mod day03;
 
 pub trait DaySolution<I, O> {
     fn day(&self) -> u16;
@@ -77,4 +78,5 @@ fn main() {
     let day_range = start_day..end_day;
     get_and_store_result(Box::new(day01::Day01Solution {}), day_range.clone());
     get_and_store_result(Box::new(day02::Day02Solution {}), day_range.clone());
+    get_and_store_result(Box::new(day03::Day03Solution {}), day_range.clone());
 }
