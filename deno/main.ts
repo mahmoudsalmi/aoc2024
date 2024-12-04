@@ -17,7 +17,7 @@ function getAndStoreResult<I, O>(
 
   const result = daySolution(dayS);
   console.log(result);
-  writeResult(YEAR, startDay, result);
+  writeResult(YEAR, dayS.day, result);
   startDay++;
 }
 
