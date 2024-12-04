@@ -1,8 +1,8 @@
 import { DaySolution, daySolution, writeResult } from "./_tools.ts";
 import { Day01 } from "./day01.ts";
 import { Day02 } from "./day02.ts";
-import {Day03} from './day03.ts';
-import {Day04} from './day04.ts';
+import { Day03 } from "./day03.ts";
+import { Day04 } from "./day04.ts";
 
 export const YEAR = 2024;
 

@@ -1,5 +1,5 @@
-import {DaySolution, parseData} from './_tools.ts';
-import {parseLines} from './_helpers.ts';
+import { DaySolution, parseData } from "./_tools.ts";
+import { parseLines } from "./_helpers.ts";
 
 function executeOp(op: string): number {
   return [...op.matchAll(/\d+/g)]
@@ -47,5 +47,3 @@ export class Day03 implements DaySolution<string, number> {
       .reduce((acc, n) => acc + n, 0);
   }
 }
-
-

@@ -1,5 +1,5 @@
-import {DaySolution, parseData} from './_tools.ts';
-import {parseLines} from './_helpers.ts';
+import { DaySolution, parseData } from "./_tools.ts";
+import { parseLines } from "./_helpers.ts";
 
 type Grid = string[][];
 type Vec2 = [number, number];
@@ -78,7 +78,7 @@ function checkXMasDiagram(
   }
 
   for (const xMasDirection of XMasDirections) {
-    let mas: [string | null, string | null] = [
+    const mas: [string | null, string | null] = [
       getEl(grid, nextVec2(grid, current, xMasDirection[0])),
       getEl(grid, nextVec2(grid, current, xMasDirection[1])),
     ];
@@ -108,7 +108,7 @@ export class Day04 implements DaySolution<Grid, number> {
     return wordCount;
   }
 
-  part2 (input: Grid): number {
+  part2(input: Grid): number {
     let wordCount = 0;
     for (let y = 0; y < input.length; y++) {
       for (let x = 0; x < input[y].length; x++) {
@@ -116,5 +116,5 @@ export class Day04 implements DaySolution<Grid, number> {
       }
     }
     return wordCount;
-  };
+  }
 }
