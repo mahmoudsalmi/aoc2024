@@ -20,19 +20,7 @@ impl SortRule {
     }
 
     fn is_sorted(&self, list: &Vec<i32>) -> bool {
-        for current in 0..list.len() {
-            for i in 0..list.len() {
-                if current == i {
-                    continue;
-                }
-                let idx_ord = if i < current { Ordering::Less } else { Ordering::Greater };
-                if self.get_rule(list[current], list[i]) == idx_ord {
-                    return false;
-                }
-            }
-        }
-        true
-
+        list.windows(2).all(|w| { self.get_rule(w[0], w[1]) == Ordering::Less })
     }
 }
 
