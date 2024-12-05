@@ -7,12 +7,13 @@ export function parseTokens<T>(
     .map(transformer);
 }
 
-export function parseLines<L>(
+export function parseLines<L = string>(
   data: string,
   transformer: (line: string) => L,
+  ignoreEmpty = true,
 ): L[] {
   return data.split(/\r?\n/)
-    .filter(Boolean)
+    .filter(line => Boolean(line) || !ignoreEmpty)
     .map(transformer);
 }
 
