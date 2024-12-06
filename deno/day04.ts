@@ -1,5 +1,5 @@
-import { DaySolution, parseData } from "./_tools.ts";
-import { parseLines } from "./_helpers.ts";
+import { DaySolution, parseData } from './_tools.ts';
+import { parseLines } from './_helpers.ts';
 
 type Grid = string[][];
 type Vec2 = [number, number];
@@ -29,7 +29,7 @@ const XMasDirections: Vec2[][] = [
   [[1, -1], [-1, 1]],
 ];
 
-const Word = "XMAS";
+const Word = 'XMAS';
 
 function nextVec2(
   grid: Grid,
@@ -73,7 +73,7 @@ function checkXMasDiagram(
   grid: Grid,
   current: Vec2,
 ): boolean {
-  if (getEl(grid, current) !== "A") {
+  if (getEl(grid, current) !== 'A') {
     return false;
   }
 
@@ -83,7 +83,7 @@ function checkXMasDiagram(
       getEl(grid, nextVec2(grid, current, xMasDirection[1])),
     ];
     mas.sort();
-    if (mas[0] !== "M" || mas[1] !== "S") {
+    if (mas[0] !== 'M' || mas[1] !== 'S') {
       return false;
     }
   }
@@ -94,8 +94,8 @@ function checkXMasDiagram(
 export class Day04 implements DaySolution<Grid, number> {
   day = 4;
 
-  parseData(dataLabel: "Example" | "Input"): string[][] {
-    return parseLines(parseData(this.day, dataLabel), (s) => s.split(""));
+  parseData(dataLabel: 'Example' | 'Input'): string[][] {
+    return parseLines(parseData(this.day, dataLabel), (s) => s.split(''));
   }
 
   part1(input: Grid): number {

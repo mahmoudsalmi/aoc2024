@@ -1,20 +1,14 @@
-import {
-  DaySolution,
-  parseExempleData,
-  parseInputPart1Data,
-} from "./_tools.ts";
+import { DaySolution, parseExempleData, parseInputPart1Data } from './_tools.ts';
 
 export class Day01 implements DaySolution<[number[], number[]], number> {
   day = 1;
 
-  parseData(dataLabel: "Example" | "Input"): [number[], number[]] {
-    const rawData = dataLabel === "Example"
-      ? parseExempleData(this.day)
-      : parseInputPart1Data(this.day);
+  parseData(dataLabel: 'Example' | 'Input'): [number[], number[]] {
+    const rawData = dataLabel === 'Example' ? parseExempleData(this.day) : parseInputPart1Data(this.day);
 
     const result: [number[], number[]] = [[], []];
 
-    const lines = rawData.split("\n").filter((line) => line.length > 0);
+    const lines = rawData.split('\n').filter((line) => line.length > 0);
     for (const line of lines) {
       const [n1, n2] = line.split(/\s+/);
       result[0].push(parseInt(n1.trim(), 10));
@@ -25,7 +19,7 @@ export class Day01 implements DaySolution<[number[], number[]], number> {
   }
 
   part1 = (input: [number[], number[]]) => {
-    console.error("part1");
+    console.error('part1');
     const left = [...input[0]].sort();
     const right = [...input[1]].sort();
     let res = 0;

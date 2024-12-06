@@ -1,5 +1,5 @@
-import { DaySolution, parseData } from "./_tools.ts";
-import { parseLines } from "./_helpers.ts";
+import { DaySolution, parseData } from './_tools.ts';
+import { parseLines } from './_helpers.ts';
 
 function executeOp(op: string): number {
   return [...op.matchAll(/\d+/g)]
@@ -10,11 +10,11 @@ function executeOp(op: string): number {
 export class Day03 implements DaySolution<string, number> {
   day = 3;
 
-  parseData(dataLabel: "Example" | "Input") {
+  parseData(dataLabel: 'Example' | 'Input') {
     return parseLines(
       parseData(this.day, dataLabel),
       (s) => s,
-    ).join(" ");
+    ).join(' ');
   }
 
   part1(input: string): number {
@@ -30,7 +30,7 @@ export class Day03 implements DaySolution<string, number> {
       .filter((op): string | null => {
         let res: string | null = null;
         switch (op) {
-          case "do()":
+          case 'do()':
             activate = true;
             break;
           case "don't()":

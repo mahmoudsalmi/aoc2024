@@ -1,5 +1,5 @@
-import { DaySolution, parseData } from "./_tools.ts";
-import { parseLines } from "./_helpers.ts";
+import { DaySolution, parseData } from './_tools.ts';
+import { parseLines } from './_helpers.ts';
 
 type Grid = boolean[][];
 type Position = { x: number; y: number };
@@ -16,22 +16,22 @@ class Data {
   public start: Position | null = null;
 
   public current: Position | null = null;
-  public direction: Direction = "U";
+  public direction: Direction = 'U';
 
   public addedObstacle: Position | null = null;
   public visited: Set<Direction>[][] = [];
 
   addLine(s: string) {
     this.grid.push(
-      s.split("").map((c, x) => {
-        if (c === "^") this.start = { x, y: this.grid.length };
-        return c === "#";
+      s.split('').map((c, x) => {
+        if (c === '^') this.start = { x, y: this.grid.length };
+        return c === '#';
       }),
     );
   }
 
   reset() {
-    this.direction = "U";
+    this.direction = 'U';
     this.current = this.start;
     this.visited = this.grid.map((row) => row.map(() => new Set<Direction>()));
     this.visited[this.start!.y][this.start!.x].add(this.direction);
@@ -54,7 +54,7 @@ class Data {
     return x === this.start!.x && y === this.start!.y;
   }
 
-  next(): boolean | "LOOP" {
+  next(): boolean | 'LOOP' {
     let { x, y } = this.current!;
     x += Directions[this.direction].x;
     y += Directions[this.direction].y;
@@ -64,7 +64,7 @@ class Data {
     }
 
     if (this.visited[y][x].has(this.direction)) {
-      return "LOOP";
+      return 'LOOP';
     }
 
     if (this.isObstacle({ x, y })) {
@@ -79,20 +79,20 @@ class Data {
 
   turnRight() {
     const toRight: Record<Direction, Direction> = {
-      U: "R",
-      R: "D",
-      D: "L",
-      L: "U",
+      U: 'R',
+      R: 'D',
+      D: 'L',
+      L: 'U',
     };
     return toRight[this.direction];
   }
 
   walkInto(): number {
     this.reset();
-    let next: boolean | "LOOP" = true;
+    let next: boolean | 'LOOP' = true;
     while (next === true) {
       next = this.next();
-      if (next === "LOOP") {
+      if (next === 'LOOP') {
         return -1;
       }
     }
@@ -103,7 +103,7 @@ class Data {
 export class Day06 implements DaySolution<Data, number> {
   day = 6;
 
-  parseData(dataLabel: "Example" | "Input"): Data {
+  parseData(dataLabel: 'Example' | 'Input'): Data {
     const data = new Data();
     parseLines(parseData(this.day, dataLabel), (line) => data.addLine(line));
     return data;

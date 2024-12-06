@@ -1,5 +1,5 @@
-import { DaySolution, parseData } from "./_tools.ts";
-import { parseLines } from "./_helpers.ts";
+import { DaySolution, parseData } from './_tools.ts';
+import { parseLines } from './_helpers.ts';
 
 type Line = number[];
 
@@ -8,7 +8,7 @@ class Data {
   public lines = [] as Line[];
 
   addRule(s: string) {
-    const [a, b] = s.split("|").map((i) => parseInt(i));
+    const [a, b] = s.split('|').map((i) => parseInt(i));
 
     if (!this.rules.has(a)) this.rules.set(a, new Map());
     this.rules.get(a)!.set(b, 1);
@@ -18,7 +18,7 @@ class Data {
   }
 
   addLine(s: string) {
-    this.lines.push(s.split(",").map((i) => parseInt(i)));
+    this.lines.push(s.split(',').map((i) => parseInt(i)));
   }
 
   checkRule(a: number, b: number): number {
@@ -37,7 +37,7 @@ class Data {
 export class Day05 implements DaySolution<Data, number> {
   day = 5;
 
-  parseData(dataLabel: "Example" | "Input"): Data {
+  parseData(dataLabel: 'Example' | 'Input'): Data {
     let readRules = true;
     return parseLines<string>(
       parseData(this.day, dataLabel),
@@ -45,7 +45,7 @@ export class Day05 implements DaySolution<Data, number> {
       false,
     )
       .reduce((data, line) => {
-        if (line === "") {
+        if (line === '') {
           readRules = false;
           return data;
         }

@@ -1,9 +1,5 @@
-import {
-  type DaySolution,
-  parseExempleData,
-  parseInputPart1Data,
-} from "./_tools.ts";
-import { parseNumbersByLines } from "./_helpers.ts";
+import { type DaySolution, parseExempleData, parseInputPart1Data } from './_tools.ts';
+import { parseNumbersByLines } from './_helpers.ts';
 
 function isSafe(report: number[]): boolean {
   const increase = report[1] - report[0] > 0;
@@ -20,10 +16,8 @@ function isSafe(report: number[]): boolean {
 export class Day02 implements DaySolution<number[][], number> {
   day = 2;
 
-  parseData(dataLabel: "Example" | "Input"): number[][] {
-    const rawData = dataLabel === "Example"
-      ? parseExempleData(this.day)
-      : parseInputPart1Data(this.day);
+  parseData(dataLabel: 'Example' | 'Input'): number[][] {
+    const rawData = dataLabel === 'Example' ? parseExempleData(this.day) : parseInputPart1Data(this.day);
 
     return parseNumbersByLines(rawData);
   }

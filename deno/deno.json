@@ -4,5 +4,12 @@
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1"
+  },
+  "fmt": {
+    "singleQuote": true,
+    "semiColons": true,
+    "lineWidth": 300,
+    "indentWidth": 2,
+    "useTabs": false
   }
 }
