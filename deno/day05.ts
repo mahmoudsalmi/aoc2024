@@ -1,5 +1,5 @@
-import {DaySolution, parseData} from './_tools.ts';
-import {parseLines} from './_helpers.ts';
+import { DaySolution, parseData } from "./_tools.ts";
+import { parseLines } from "./_helpers.ts";
 
 type Line = number[];
 
@@ -68,7 +68,7 @@ export class Day05 implements DaySolution<Data, number> {
   part2(input: Data): number {
     return input.lines
       .filter((line) => !input.isSorted(line))
-      .map(line => line.sort((a, b) => input.checkRule(a, b)))
+      .map((line) => line.sort((a, b) => input.checkRule(a, b)))
       .map((line) => input.getLineRank(line))
       .reduce((res, r) => res + r, 0);
   }

@@ -13,7 +13,7 @@ export function parseLines<L = string>(
   ignoreEmpty = true,
 ): L[] {
   return data.split(/\r?\n/)
-    .filter(line => Boolean(line) || !ignoreEmpty)
+    .filter((line) => Boolean(line) || !ignoreEmpty)
     .map(transformer);
 }
 
