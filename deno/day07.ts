@@ -16,34 +16,30 @@ enum Op {
 const OpsP1 = [Op.ADD, Op.MUL];
 const OpsP2 = [Op.ADD, Op.MUL, Op.CONCAT];
 
-function generateCombinaisons(size: number, baseOps: Op[], prefix: Op[] = []): Op[][] {
-  if (size === 1) return baseOps.map((op) => [...prefix, op]);
-  return baseOps.flatMap((op) => generateCombinaisons(size - 1, baseOps, [...prefix, op]));
+function applyOp(op: Op, a: number, b: number): number {
+  switch (op) {
+    case Op.ADD:
+      return a + b;
+    case Op.MUL:
+      return a * b;
+    case Op.CONCAT:
+      return parseInt(a.toString() + b.toString());
+  }
 }
 
-function checkOps(data: Data, baseOps: Op[]): number {
-  return data.reduce((sum, { target, numbers }) => {
-    for (const ops of generateCombinaisons(numbers.length - 1, baseOps)) {
-      let res = numbers[0];
-      for (let i = 1; i < numbers.length; i++) {
-        switch (ops[i - 1]) {
-          case Op.ADD:
-            res += numbers[i];
-            break;
-          case Op.MUL:
-            res *= numbers[i];
-            break;
-          case Op.CONCAT:
-            res = parseInt(res.toString() + numbers[i].toString());
-            break;
-        }
-      }
-      if (res === target) {
-        return sum + target;
-      }
+function checkRecOps(numbers: number[], target: number, baseOps: Op[], previousRes: number, idx: number): number {
+  if (idx === numbers.length) {
+    return previousRes;
+  }
+
+  for (const op of baseOps) {
+    const res = checkRecOps(numbers, target, baseOps, applyOp(op, previousRes, numbers[idx]), idx + 1);
+    if (res === target) {
+      return res;
     }
-    return sum;
-  }, 0);
+  }
+
+  return 0;
 }
 
 export class Day07 implements DaySolution<Data, number> {
@@ -61,10 +57,12 @@ export class Day07 implements DaySolution<Data, number> {
   }
 
   part1(data: Data): number {
-    return checkOps(data, OpsP1);
+    return data.map(({target, numbers}) => checkRecOps(numbers, target, OpsP1, numbers[0], 1))
+      .reduce((sum, res) => sum + res, 0);
   }
 
   part2(data: Data): number {
-    return checkOps(data, OpsP2);
+    return data.map(({target, numbers}) => checkRecOps(numbers, target, OpsP2, numbers[0], 1))
+      .reduce((sum, res) => sum + res, 0);
   }
 }

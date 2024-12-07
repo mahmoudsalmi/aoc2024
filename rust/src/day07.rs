@@ -21,20 +21,6 @@ impl Op {
 const OPS_1: [Op; 2] = [Op::Add, Op::Mul];
 const OPS_2: [Op; 3] = [Op::Add, Op::Mul, Op::Concat];
 
-fn generate_combinaisons(size: usize, base_ops: Vec<Op>, prefix: Vec<Op>) -> Vec<Vec<Op>> {
-    if size == 0 {
-        vec![prefix]
-    } else {
-        base_ops.iter()
-            .flat_map(|op| {
-                let mut prefix = prefix.clone();
-                prefix.push(op.clone());
-                generate_combinaisons(size - 1, base_ops.clone(), prefix)
-            })
-            .collect()
-    }
-}
-
 #[derive(Debug)]
 pub struct Problem(i128, Vec<i128>);
 impl From<&str> for Problem {
@@ -49,15 +35,23 @@ impl From<&str> for Problem {
 }
 impl Problem {
     fn check(&self, base_opts: Vec<Op>) -> bool {
-        generate_combinaisons(self.1.len() - 1, base_opts, vec![])
-            .iter()
-            .any(|ops| {
-                let mut res = self.1[0];
-                for i in 1..self.1.len() {
-                    res = ops[i - 1].apply(res, self.1[i]);
-                }
-                res == self.0
-            })
+        self.check_rec(base_opts, self.1[0], 1).is_some()
+    }
+
+    fn check_rec(&self, base_opts: Vec<Op>, previous_res: i128, idx: usize) -> Option<i128> {
+        if idx == self.1.len() {
+            if previous_res == self.0 {
+                Some(previous_res)
+            } else {
+                None
+            }
+        } else {
+            base_opts.iter()
+                .filter_map(|op| {
+                    self.check_rec(base_opts.clone(), op.apply(previous_res, self.1[idx]), idx + 1)
+                })
+                .next()
+        }
     }
 }
 
