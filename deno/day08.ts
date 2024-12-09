@@ -42,29 +42,21 @@ class Data {
     this.indexed.get(value)!.add(position);
   }
 
-  isEmpty({ x, y }: Position): boolean {
-    return !this.all.has(new Position(x, y));
-  }
-
   inGrid({ x, y }: Position): boolean {
     return x >= 0 && x < this.width && y >= 0 && y < this.height;
-  }
-
-  validPosition({ x, y }: Position): boolean {
-    return this.inGrid({ x, y }) && this.isEmpty(new Position(x, y));
   }
 
   calculateAntinodesPart1(p1: Position, p2: Position): Position[] {
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
 
-    if (dx === 0 || dy === 0) {
+    if (dx === 0 && dy === 0) {
       return [];
     }
 
     const antinode1 = new Position(p2.x + dx, p2.y + dy);
     const antinode2 = new Position(p1.x - dx, p1.y - dy);
-    return [antinode1, antinode2].filter((p) => this.validPosition(p));
+    return [antinode1, antinode2].filter((p) => this.inGrid(p));
   }
 
   calculateAntinodesPart2(p1: Position, p2: Position): Position[] {
