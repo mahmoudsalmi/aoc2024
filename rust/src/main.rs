@@ -12,6 +12,7 @@ mod day05;
 mod day06;
 mod day07;
 mod day08;
+mod day09;
 
 pub trait DaySolution<I, O> {
     fn day(&self) -> u16;
@@ -89,4 +90,5 @@ fn main() {
     get_and_store_result(Box::new(day06::Day06Solution {}), day_range.clone());
     get_and_store_result(Box::new(day07::Day07Solution {}), day_range.clone());
     get_and_store_result(Box::new(day08::Day08Solution {}), day_range.clone());
+    get_and_store_result(Box::new(day09::Day09Solution {}), day_range.clone());
 }
