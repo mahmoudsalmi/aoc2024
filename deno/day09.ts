@@ -6,7 +6,7 @@ class Blocs {
   blocs: (number | null)[];
   freeSize: number;
 
-  constructor(
+  private constructor(
     public size: number,
     value: number | null,
   ) {
@@ -14,7 +14,8 @@ class Blocs {
     this.freeSize = this.blocs.filter((b) => b === null).length;
   }
 
-  static toBlocsList(digits: Data): Blocs[] {
+  // ------------------------------------------------------------ Builder
+  static blocsList(digits: Data): Blocs[] {
     const data: Blocs[] = [];
     let file = true;
     let fileIdx = 0;
@@ -40,7 +41,8 @@ class Blocs {
     return new Blocs(size, null);
   }
 
-  static moveToPartialTo(fromBlocs: Blocs, toBlocs: Blocs): number {
+  // ------------------------------------------------------------ Move
+  static movePartial(fromBlocs: Blocs, toBlocs: Blocs): number {
     let fromBlocsId = fromBlocs.lastNonFreeBlocIdx();
     let toBlocsId = toBlocs.firstFreeBlocIdx();
 
@@ -65,19 +67,33 @@ class Blocs {
     return moved;
   }
 
-  static moveAllBlocs(fromBlocs: Blocs, toBlocs: Blocs): boolean {
+  static moveFull(fromBlocs: Blocs, toBlocs: Blocs): boolean {
     if (fromBlocs.isEmpty() || toBlocs.isFull()) {
       return false;
     }
 
     if (fromBlocs.isFull() && fromBlocs.size <= toBlocs.freeSize) {
-      const moved = this.moveToPartialTo(fromBlocs, toBlocs);
+      const moved = this.movePartial(fromBlocs, toBlocs);
       if (moved !== fromBlocs.size) throw new Error('Error while moving all blocs');
       return true;
     }
     return false;
   }
 
+  // ------------------------------------------------------------ Checksum
+  static checksum(blocsList: Blocs[]): number {
+    let res = 0;
+    let idx = 0;
+    blocsList.forEach((blocs) => {
+      blocs.blocs.forEach((bloc) => {
+        if (bloc !== null) res += bloc * idx;
+        idx++;
+      });
+    });
+    return res;
+  }
+
+  // ------------------------------------------------------------ Utils
   isEmpty(): boolean {
     return this.size === this.freeSize;
   }
@@ -91,7 +107,6 @@ class Blocs {
   }
 
   private firstFreeBlocIdx(): number {
-    if (this.freeSize === 0) return -1;
     return this.blocs.findIndex((b) => b === null);
   }
 }
@@ -104,60 +119,31 @@ export class Day09 implements DaySolution<Data, number> {
   }
 
   part1(digits: Data): number {
-    const data = Blocs.toBlocsList(digits);
-    let small = 0;
-    let big = data.length - 1;
+    const blocsList = Blocs.blocsList(digits);
 
-    // ------------------------- move blocs
-    let smallBlocs = data[small];
-    let bigBlocs = data[big];
-    while (small < big) {
-      Blocs.moveToPartialTo(data[big], data[small]);
-      if (smallBlocs.isFull()) {
-        small++;
-        smallBlocs = data[small];
-      }
-      if (bigBlocs.isEmpty()) {
-        big--;
-        bigBlocs = data[big];
-      }
+    let [to, from] = [0, blocsList.length - 1];
+
+    while (to < from) {
+      Blocs.movePartial(blocsList[from], blocsList[to]);
+
+      if (blocsList[to].isFull()) to++;
+      if (blocsList[from].isEmpty()) from--;
     }
 
-    // ------------------------- chucksum
-    let res = 0;
-    let idx = 0;
-    data.forEach((blocs) => {
-      blocs.blocs.forEach((bloc) => {
-        if (bloc !== null) res += bloc * idx;
-        idx++;
-      });
-    });
-    return res;
+    return Blocs.checksum(blocsList);
   }
 
   part2(digits: Data): number {
-    const data = Blocs.toBlocsList(digits);
-    for (let i = data.length - 1; i >= 0; i--) {
-      const fromBlocs = data[i];
+    const blocsList = Blocs.blocsList(digits);
+    for (let from = blocsList.length - 1; from >= 0; from--) {
+      const fromBlocs = blocsList[from];
 
-      let j = 0;
-      let moved = false;
-      while (!moved && j <= i) {
-        const toBlocs = data[j];
-        moved = Blocs.moveAllBlocs(fromBlocs, toBlocs);
-        j++;
+      let to = 0;
+      while (to <= from && !Blocs.moveFull(fromBlocs, blocsList[to])) {
+        to++;
       }
     }
 
-    // ------------------------- chucksum
-    let res = 0;
-    let idx = 0;
-    data.forEach((blocs) => {
-      blocs.blocs.forEach((bloc) => {
-        if (bloc !== null) res += bloc * idx;
-        idx++;
-      });
-    });
-    return res;
+    return Blocs.checksum(blocsList);
   }
 }
