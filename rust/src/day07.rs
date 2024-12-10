@@ -57,9 +57,9 @@ impl Problem {
 
 pub type Data = Vec<Problem>;
 
-pub struct Day07Solution;
+pub struct Day07;
 
-impl DaySolution<Data, i128> for Day07Solution {
+impl DaySolution<Data, i128> for Day07 {
     fn day(&self) -> u16 {
         7
     }

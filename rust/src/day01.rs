@@ -2,9 +2,9 @@ use crate::tools::{read_example, read_input};
 use crate::DaySolution;
 use std::collections::HashMap;
 
-pub struct Day01Solution {}
+pub struct Day01 {}
 
-impl DaySolution<(Vec<i32>, Vec<i32>), i32> for Day01Solution {
+impl DaySolution<(Vec<i32>, Vec<i32>), i32> for Day01 {
     fn day(&self) -> u16 {
         1
     }

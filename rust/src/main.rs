@@ -13,6 +13,7 @@ mod day06;
 mod day07;
 mod day08;
 mod day09;
+mod day10;
 
 pub trait DaySolution<I, O> {
     fn day(&self) -> u16;
@@ -82,13 +83,14 @@ fn main() {
         end_day = args[2].parse::<u16>().unwrap() + 1;
     }
     let day_range = start_day..end_day;
-    get_and_store_result(Box::new(day01::Day01Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day02::Day02Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day03::Day03Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day04::Day04Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day05::Day05Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day06::Day06Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day07::Day07Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day08::Day08Solution {}), day_range.clone());
-    get_and_store_result(Box::new(day09::Day09Solution {}), day_range.clone());
+    get_and_store_result(Box::new(day01::Day01 {}), day_range.clone());
+    get_and_store_result(Box::new(day02::Day02 {}), day_range.clone());
+    get_and_store_result(Box::new(day03::Day03 {}), day_range.clone());
+    get_and_store_result(Box::new(day04::Day04 {}), day_range.clone());
+    get_and_store_result(Box::new(day05::Day05 {}), day_range.clone());
+    get_and_store_result(Box::new(day06::Day06 {}), day_range.clone());
+    get_and_store_result(Box::new(day07::Day07 {}), day_range.clone());
+    get_and_store_result(Box::new(day08::Day08 {}), day_range.clone());
+    get_and_store_result(Box::new(day09::Day09 {}), day_range.clone());
+    get_and_store_result(Box::new(day10::Day10 {}), day_range.clone());
 }

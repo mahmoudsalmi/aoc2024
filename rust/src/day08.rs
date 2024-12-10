@@ -108,9 +108,9 @@ impl Data {
     }
 }
 
-pub struct Day08Solution;
+pub struct Day08;
 
-impl DaySolution<Data, usize> for Day08Solution {
+impl DaySolution<Data, usize> for Day08 {
     fn day(&self) -> u16 { 8 }
 
     fn parse_input(&self, example: bool) -> Data {

@@ -2,9 +2,9 @@ use crate::tools::read_raw_data;
 use crate::DaySolution;
 use regex::Regex;
 
-pub struct Day03Solution {}
+pub struct Day03 {}
 
-impl Day03Solution {
+impl Day03 {
     pub fn get_mul_operations(&self, line: String) -> Vec<String> {
         Regex::new(r"mul\(\d{1,3},\d{1,3}\)")
             .unwrap()
@@ -30,7 +30,7 @@ impl Day03Solution {
     }
 }
 
-impl DaySolution<Vec<String>, i32> for Day03Solution {
+impl DaySolution<Vec<String>, i32> for Day03 {
     fn day(&self) -> u16 {
         3
     }

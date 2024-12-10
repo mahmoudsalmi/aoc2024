@@ -148,9 +148,9 @@ impl Data {
     }
 }
 
-pub struct Day06Solution;
+pub struct Day06;
 
-impl DaySolution<Data, usize> for Day06Solution {
+impl DaySolution<Data, usize> for Day06 {
     fn day(&self) -> u16 {
         6
     }

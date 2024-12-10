@@ -22,9 +22,9 @@ impl File {
 
 pub type Data = Vec<File>;
 
-pub struct Day09Solution {}
+pub struct Day09 {}
 
-impl DaySolution<Data, usize> for Day09Solution {
+impl DaySolution<Data, usize> for Day09 {
     fn day(&self) -> u16 {
         9
     }

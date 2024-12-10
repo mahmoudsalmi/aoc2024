@@ -113,9 +113,9 @@ impl Grid {
 }
 
 
-pub struct Day04Solution {}
+pub struct Day04 {}
 
-impl DaySolution<Grid, i32> for Day04Solution {
+impl DaySolution<Grid, i32> for Day04 {
     fn day(&self) -> u16 {
         4
     }

@@ -26,9 +26,9 @@ impl SortRule {
 
 pub struct Data(SortRule, Vec<Vec<i32>>);
 
-pub struct Day05Solution;
+pub struct Day05;
 
-impl DaySolution<Data, i32> for Day05Solution {
+impl DaySolution<Data, i32> for Day05 {
     fn day(&self) -> u16 {
         5
     }

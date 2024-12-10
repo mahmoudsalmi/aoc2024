@@ -1,9 +1,9 @@
 use crate::tools::{read_example, read_input};
 use crate::DaySolution;
 
-pub struct Day02Solution {}
+pub struct Day02 {}
 
-impl Day02Solution {
+impl Day02 {
     fn is_safe(&self, report: &Vec<i32>) -> bool {
         let increase = report[1] - report[0] >= 0;
         report.windows(2)
@@ -15,7 +15,7 @@ impl Day02Solution {
     }
 }
 
-impl DaySolution<Vec<Vec<i32>>, i32> for Day02Solution {
+impl DaySolution<Vec<Vec<i32>>, i32> for Day02 {
     fn day(&self) -> u16 {
         2_u16
     }
