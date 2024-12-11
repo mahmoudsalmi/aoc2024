@@ -25,11 +25,15 @@ pub type Data = Vec<File>;
 pub struct Day09 {}
 
 impl DaySolution<Data, usize> for Day09 {
+    fn new() -> Self {
+        Self {}
+    }
+
     fn day(&self) -> u16 {
         9
     }
 
-    fn parse_input(&self, example: bool) -> Data {
+    fn parse_input(&mut self, example: bool) -> Data {
         let raw_data = read_raw_data(self.day(), example);
 
         let digits = raw_data.chars()
@@ -52,7 +56,7 @@ impl DaySolution<Data, usize> for Day09 {
             .collect()
     }
 
-    fn part1(&self, input: &Data) -> usize {
+    fn part1(&mut self, input: &Data) -> usize {
         let mut res: usize = 0;
         let mut idx: usize = 0;
 
@@ -94,7 +98,7 @@ impl DaySolution<Data, usize> for Day09 {
         res
     }
 
-    fn part2(&self, input: &Data) -> usize {
+    fn part2(&mut self, input: &Data) -> usize {
         let mut data = input.clone();
         let mut moved = HashSet::<usize>::new();
 

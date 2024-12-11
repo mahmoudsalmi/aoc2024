@@ -16,11 +16,15 @@ impl Day02 {
 }
 
 impl DaySolution<Vec<Vec<i32>>, i32> for Day02 {
+    fn new() -> Self {
+        Day02 {}
+    }
+
     fn day(&self) -> u16 {
         2_u16
     }
 
-    fn parse_input(&self, example: bool) -> Vec<Vec<i32>> {
+    fn parse_input(&mut self, example: bool) -> Vec<Vec<i32>> {
         let raw_data = if example {
             read_example(self.day())
         } else {
@@ -37,14 +41,14 @@ impl DaySolution<Vec<Vec<i32>>, i32> for Day02 {
             .collect()
     }
 
-    fn part1(&self, input: &Vec<Vec<i32>>) -> i32 {
+    fn part1(&mut self, input: &Vec<Vec<i32>>) -> i32 {
         input.iter()
             .map(|report| self.is_safe(&report))
             .filter(|&safe| safe)
             .count() as i32
     }
 
-    fn part2(&self, input: &Vec<Vec<i32>>) -> i32 {
+    fn part2(&mut self, input: &Vec<Vec<i32>>) -> i32 {
         input.iter()
             .map(|report| {
                 (0..report.len())

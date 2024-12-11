@@ -111,9 +111,13 @@ impl Data {
 pub struct Day08;
 
 impl DaySolution<Data, usize> for Day08 {
+    fn new() -> Self {
+        Self {}
+    }
+
     fn day(&self) -> u16 { 8 }
 
-    fn parse_input(&self, example: bool) -> Data {
+    fn parse_input(&mut self, example: bool) -> Data {
         let raw_data = read_raw_data(self.day(), example);
         let raw_data = raw_data.lines().collect::<Vec<&str>>();
 
@@ -130,11 +134,11 @@ impl DaySolution<Data, usize> for Day08 {
         data
     }
 
-    fn part1(&self, input: &Data) -> usize {
+    fn part1(&mut self, input: &Data) -> usize {
         input.calculate_all_antinodes(false).len()
     }
 
-    fn part2(&self, input: &Data) -> usize {
+    fn part2(&mut self, input: &Data) -> usize {
         input.calculate_all_antinodes(true).len()
     }
 }

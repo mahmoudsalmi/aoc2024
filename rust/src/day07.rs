@@ -60,16 +60,20 @@ pub type Data = Vec<Problem>;
 pub struct Day07;
 
 impl DaySolution<Data, i128> for Day07 {
+    fn new() -> Self {
+        Self {}
+    }
+
     fn day(&self) -> u16 {
         7
     }
 
-    fn parse_input(&self, example: bool) -> Data {
+    fn parse_input(&mut self, example: bool) -> Data {
         let raw_data = read_raw_data(7, example);
         raw_data.lines().map(|l| l.into()).collect()
     }
 
-    fn part1(&self, input: &Data) -> i128 {
+    fn part1(&mut self, input: &Data) -> i128 {
         input
             .iter()
             .filter(|p| p.check(OPS_1.to_vec()))
@@ -77,7 +81,7 @@ impl DaySolution<Data, i128> for Day07 {
             .sum()
     }
 
-    fn part2(&self, input: &Data) -> i128 {
+    fn part2(&mut self, input: &Data) -> i128 {
         input
             .iter()
             .filter(|p| p.check(OPS_2.to_vec()))

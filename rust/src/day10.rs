@@ -74,11 +74,15 @@ impl Data {
 pub struct Day10;
 
 impl DaySolution<Data, i32> for Day10 {
+    fn new() -> Self {
+        Self {}
+    }
+
     fn day(&self) -> u16 {
         10
     }
 
-    fn parse_input(&self, example: bool) -> Data {
+    fn parse_input(&mut self, example: bool) -> Data {
         let raw_data = read_raw_data(self.day(), example);
 
         Data(
@@ -93,11 +97,11 @@ impl DaySolution<Data, i32> for Day10 {
         )
     }
 
-    fn part1(&self, input: &Data) -> i32 {
+    fn part1(&mut self, input: &Data) -> i32 {
         input.get_all_tail_heads().iter().cloned().collect::<HashSet<TailHead>>().len() as i32
     }
 
-    fn part2(&self, input: &Data) -> i32 {
+    fn part2(&mut self, input: &Data) -> i32 {
         input.get_all_tail_heads().len() as i32
     }
 }

@@ -116,11 +116,15 @@ impl Grid {
 pub struct Day04 {}
 
 impl DaySolution<Grid, i32> for Day04 {
+    fn new() -> Self {
+        Day04 {}
+    }
+
     fn day(&self) -> u16 {
         4
     }
 
-    fn parse_input(&self, example: bool) -> Grid {
+    fn parse_input(&mut self, example: bool) -> Grid {
         let raw_data = read_raw_data(self.day(), example);
         let mut grid = Grid::new();
         for line in raw_data.lines() {
@@ -129,7 +133,7 @@ impl DaySolution<Grid, i32> for Day04 {
         grid
     }
 
-    fn part1(&self, input: &Grid) -> i32 {
+    fn part1(&mut self, input: &Grid) -> i32 {
         let mut count = 0;
         input.for_each(|i, _c| {
             count += input.check_word(i);
@@ -137,7 +141,7 @@ impl DaySolution<Grid, i32> for Day04 {
         count
     }
 
-    fn part2(&self, input: &Grid) -> i32 {
+    fn part2(&mut self, input: &Grid) -> i32 {
         let mut count = 0;
         input.for_each(|i, _c| {
             count += if input.check_xmas_diagram(i) { 1 } else { 0 };

@@ -151,11 +151,15 @@ impl Data {
 pub struct Day06;
 
 impl DaySolution<Data, usize> for Day06 {
+    fn new() -> Self {
+        Day06 {}
+    }
+
     fn day(&self) -> u16 {
         6
     }
 
-    fn parse_input(&self, example: bool) -> Data {
+    fn parse_input(&mut self, example: bool) -> Data {
         read_raw_data(self.day(), example)
             .lines()
             .fold(Data::new(), |mut data, line| {
@@ -164,7 +168,7 @@ impl DaySolution<Data, usize> for Day06 {
             })
     }
 
-    fn part1(&self, input: &Data) -> usize {
+    fn part1(&mut self, input: &Data) -> usize {
         input.walk_into().unwrap().iter()
             .flatten()
             .filter(|directions| directions.len() >= 1)
@@ -172,7 +176,7 @@ impl DaySolution<Data, usize> for Day06 {
     }
 
 
-    fn part2(&self, input: &Data) -> usize {
+    fn part2(&mut self, input: &Data) -> usize {
         input.grid.iter()
             .enumerate()
             .map(|(y, row)| row.iter().enumerate().map(move |(x, is_obstacle)| {(x, y, is_obstacle)}))

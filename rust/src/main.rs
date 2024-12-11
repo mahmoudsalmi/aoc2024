@@ -14,18 +14,20 @@ mod day07;
 mod day08;
 mod day09;
 mod day10;
+mod day11;
 
 pub trait DaySolution<I, O> {
+    fn new() -> Self where Self: Sized;
     fn day(&self) -> u16;
-    fn parse_input(&self, example: bool) -> I;
-    fn part1(&self, input: &I) -> O;
-    fn part2(&self, input: &I) -> O;
+    fn parse_input(&mut self, example: bool) -> I;
+    fn part1(&mut self, input: &I) -> O;
+    fn part2(&mut self, input: &I) -> O;
 }
 
 const YEAR: &str = "2024";
 const LANG: &str = "[rust]";
 
-fn day_solution<I, O: Display>(solution: Box<dyn DaySolution<I, O>>) -> String {
+fn day_solution<I, O: Display>(mut solution: Box<dyn DaySolution<I, O>>) -> String {
     let mut res = String::new();
     res.push_str(&format!(
         "----(AOC{} - Day {:02})-------------------{:->15}----\n",
@@ -33,17 +35,17 @@ fn day_solution<I, O: Display>(solution: Box<dyn DaySolution<I, O>>) -> String {
     ));
     let ex_data = solution.parse_input(true);
     let p1_data = solution.parse_input(false);
-    res.push_str(&execute_solution(&ex_data, &solution, true, true));
-    res.push_str(&execute_solution(&ex_data, &solution, false, true));
+    res.push_str(&execute_solution(&ex_data, &mut solution, true, true));
+    res.push_str(&execute_solution(&ex_data, &mut solution, false, true));
     res.push_str(&"------------------------------------------------------------\n");
-    res.push_str(&execute_solution(&p1_data, &solution, true, false));
-    res.push_str(&execute_solution(&p1_data, &solution, false, false));
+    res.push_str(&execute_solution(&p1_data, &mut solution, true, false));
+    res.push_str(&execute_solution(&p1_data, &mut solution, false, false));
     res.push_str(&"------------------------------------------------------------\n");
 
     res
 }
 
-fn execute_solution<I, O: Display>(data: &I, solution: &Box<dyn DaySolution<I, O>>, part1: bool, example: bool) -> String {
+fn execute_solution<I, O: Display>(data: &I, solution: &mut Box<dyn DaySolution<I, O>>, part1: bool, example: bool) -> String {
     let start = Instant::now();
 
 
@@ -83,14 +85,15 @@ fn main() {
         end_day = args[2].parse::<u16>().unwrap() + 1;
     }
     let day_range = start_day..end_day;
-    get_and_store_result(Box::new(day01::Day01 {}), day_range.clone());
-    get_and_store_result(Box::new(day02::Day02 {}), day_range.clone());
-    get_and_store_result(Box::new(day03::Day03 {}), day_range.clone());
-    get_and_store_result(Box::new(day04::Day04 {}), day_range.clone());
-    get_and_store_result(Box::new(day05::Day05 {}), day_range.clone());
-    get_and_store_result(Box::new(day06::Day06 {}), day_range.clone());
-    get_and_store_result(Box::new(day07::Day07 {}), day_range.clone());
-    get_and_store_result(Box::new(day08::Day08 {}), day_range.clone());
-    get_and_store_result(Box::new(day09::Day09 {}), day_range.clone());
-    get_and_store_result(Box::new(day10::Day10 {}), day_range.clone());
+    get_and_store_result(Box::new(day01::Day01::new()), day_range.clone());
+    get_and_store_result(Box::new(day02::Day02::new()), day_range.clone());
+    get_and_store_result(Box::new(day03::Day03::new()), day_range.clone());
+    get_and_store_result(Box::new(day04::Day04::new()), day_range.clone());
+    get_and_store_result(Box::new(day05::Day05::new()), day_range.clone());
+    get_and_store_result(Box::new(day06::Day06::new()), day_range.clone());
+    get_and_store_result(Box::new(day07::Day07::new()), day_range.clone());
+    get_and_store_result(Box::new(day08::Day08::new()), day_range.clone());
+    get_and_store_result(Box::new(day09::Day09::new()), day_range.clone());
+    get_and_store_result(Box::new(day10::Day10::new()), day_range.clone());
+    get_and_store_result(Box::new(day11::Day11::new()), day_range.clone());
 }

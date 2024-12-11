@@ -31,11 +31,15 @@ impl Day03 {
 }
 
 impl DaySolution<Vec<String>, i32> for Day03 {
+    fn new() -> Self {
+        Day03 {}
+    }
+
     fn day(&self) -> u16 {
         3
     }
 
-    fn parse_input(&self, example: bool) -> Vec<String> {
+    fn parse_input(&mut self, example: bool) -> Vec<String> {
         read_raw_data(self.day(), example)
             .lines()
             .filter(|line| !line.is_empty())
@@ -43,14 +47,14 @@ impl DaySolution<Vec<String>, i32> for Day03 {
             .collect()
     }
 
-    fn part1(&self, input: &Vec<String>) -> i32 {
+    fn part1(&mut self, input: &Vec<String>) -> i32 {
         self.get_mul_operations(input.join(" "))
             .iter()
             .map(|operation| self.exec_operation(operation))
             .sum::<i32>()
     }
 
-    fn part2(&self, input: &Vec<String>) -> i32 {
+    fn part2(&mut self, input: &Vec<String>) -> i32 {
         let mut activate = true;
         self.get_operations(input.join(" "))
             .iter()

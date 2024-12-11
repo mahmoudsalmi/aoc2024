@@ -29,11 +29,15 @@ pub struct Data(SortRule, Vec<Vec<i32>>);
 pub struct Day05;
 
 impl DaySolution<Data, i32> for Day05 {
+    fn new() -> Self {
+        Day05 {}
+    }
+
     fn day(&self) -> u16 {
         5
     }
 
-    fn parse_input(&self, example: bool) -> Data {
+    fn parse_input(&mut self, example: bool) -> Data {
         let raw_data = read_raw_data(self.day(), example);
         let mut read_rules = true;
         let mut data = Data(SortRule::new(), Vec::new());
@@ -52,7 +56,7 @@ impl DaySolution<Data, i32> for Day05 {
         data
     }
 
-    fn part1(&self, input: &Data) -> i32 {
+    fn part1(&mut self, input: &Data) -> i32 {
         let rules = &input.0;
         let lists = &input.1;
         lists.iter()
@@ -61,7 +65,7 @@ impl DaySolution<Data, i32> for Day05 {
             .sum()
     }
 
-    fn part2(&self, input: &Data) -> i32 {
+    fn part2(&mut self, input: &Data) -> i32 {
         let rules = &input.0;
         let lists = &input.1;
         lists.iter()
