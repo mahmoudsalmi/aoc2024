@@ -60,8 +60,13 @@ export function daySolution<I, O>(sol: DaySolution<I, O>): string {
     '\n';
   res += separator + '\n';
   res += new SolutionResult('Input', 'Part 1', sol.part1).exec(input) + '\n';
-  res += new SolutionResult('Input', 'Part 2', sol.part2).exec(input) + '\n';
+  const resPart2 = new SolutionResult('Input', 'Part 2', sol.part2).exec(input);
+  res += resPart2 + '\n';
   res += separator + '\n';
+
+  if (sol.specialContent) {
+    res += sol.specialContent(input) + '\n';
+  }
   return res;
 }
 
@@ -77,4 +82,5 @@ export interface DaySolution<I, O> {
   parseData: (dataLabel: 'Example' | 'Input') => I;
   part1: ((input: I) => O) | null;
   part2: ((input: I) => O) | null;
+  specialContent?: (input: I) => string;
 }
