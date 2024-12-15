@@ -11,6 +11,7 @@ import { Day09 } from './day09.ts';
 import { Day10 } from './day10.ts';
 import { Day11 } from './day11.ts';
 import { Day12 } from './day12.ts';
+import { Day13 } from './day13.ts';
 
 export const YEAR = 2024;
 
@@ -52,4 +53,5 @@ if (import.meta.main) {
   getAndStoreResult(new Day10(), startDay, endDay);
   getAndStoreResult(new Day11(), startDay, endDay);
   getAndStoreResult(new Day12(), startDay, endDay);
+  getAndStoreResult(new Day13(), startDay, endDay);
 }
