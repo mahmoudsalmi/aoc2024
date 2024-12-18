@@ -4,22 +4,22 @@ import { parseLines } from './_helpers.ts';
 type Position = [number, number];
 
 enum Cell {
-  _, // Empty
-  W, // Wall
-  S, // Start
-  E, // End
+  Empty,
+  Wall,
+  Start,
+  End,
 }
 
 function charToCell(char: string): Cell {
   switch (char) {
     case '.':
-      return Cell._;
+      return Cell.Empty;
     case '#':
-      return Cell.W;
+      return Cell.Wall;
     case 'S':
-      return Cell.S;
+      return Cell.Start;
     case 'E':
-      return Cell.E;
+      return Cell.End;
   }
   throw new Error(`Invalid cell char: ${char}`);
 }
@@ -38,22 +38,7 @@ const dirPositions: Record<Dir, Position> = {
   [Dir.Left]: [-1, 0],
 };
 
-function allDirections(elements: Dir[] = [Dir.Up, Dir.Right, Dir.Down, Dir.Left]): Dir[][] {
-  if (elements.length === 1) {
-    return [elements];
-  }
-
-  const res = [];
-  for (let i = 0; i < elements.length; i++) {
-    const rest = elements.slice(0, i).concat(elements.slice(i + 1));
-    for (const restPerm of allDirections(rest)) {
-      res.push([elements[i]].concat(restPerm));
-    }
-  }
-  return res;
-}
-
-const Directions: Dir[][] = allDirections();
+const directions: Dir[] = [Dir.Right, Dir.Down, Dir.Left, Dir.Up];
 
 const dirCost = (newDir: Dir, currentDir: Dir): number => {
   return newDir === currentDir ? 1 : 1001;
@@ -66,7 +51,6 @@ class Grid {
   public height: number;
   public start: Position = [0, 0];
   public end: Position = [0, 0];
-  public directions: Dir[] = Directions[0];
 
   constructor(
     public grid: Cell[][],
@@ -78,10 +62,10 @@ class Grid {
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         switch (this.getCell([x, y])) {
-          case Cell.S:
+          case Cell.Start:
             this.start = [x, y];
             break;
-          case Cell.E:
+          case Cell.End:
             this.end = [x, y];
             break;
         }
@@ -96,58 +80,99 @@ class Grid {
     return this.grid[y][x];
   }
 
-  getNeighbors([x, y]: Position, currentDir: Dir): [Position, number, Dir][] {
-    if (this.getCell([x, y]) === Cell.E) {
+  getNeighbors([x, y]: Position, currentDir: Dir): { nextPosition: Position; nextDirectCost: number; nextDir: Dir }[] {
+    if (this.getCell([x, y]) === Cell.End) {
       return [];
     }
 
-    return this.directions
-      .map((dir) =>
-        [
-          [x + dirPositions[dir][0], y + dirPositions[dir][1]],
-          dirCost(dir, currentDir),
-          dir,
-        ] as [Position, number, Dir]
-      )
-      .filter(([pos]) => this.getCell(pos) !== Cell.W);
+    return directions
+      .map((dir) => ({
+        nextPosition: [x + dirPositions[dir][0], y + dirPositions[dir][1]] as Position,
+        nextDirectCost: dirCost(dir, currentDir),
+        nextDir: dir,
+      }))
+      .filter(({ nextPosition }) => this.getCell(nextPosition) !== Cell.Wall);
+  }
+
+  initCosts(): Map<string, CostTiles> {
+    return new Map<string, CostTiles>();
+  }
+
+  addCost(costs: Map<string, CostTiles>, position: Position, dir: Dir, cost: number, ...tiles: (string | Position)[]): CostTiles {
+    const oldValues = costs.get(`${position.toString()}|${dir.toString()}`);
+
+    let newTiles = [...tiles];
+    if (oldValues?.cost === cost) {
+      newTiles = [...oldValues.tiles, ...tiles];
+    }
+
+    costs.set(`${position.toString()}|${dir.toString()}`, { cost, tiles: new Set(newTiles.map((tile) => tile.toString())) });
+    return costs.get(`${position.toString()}|${dir.toString()}`)!;
+  }
+
+  getCost(costs: Map<string, CostTiles>, position: Position, dir: Dir): CostTiles {
+    return costs.get(`${position.toString()}|${dir.toString()}`)!;
+  }
+
+  initQueue(): { currentPosition: Position; currentCost: number; currentDir: Dir; currentTiles: Set<string> }[] {
+    return [] as { currentPosition: Position; currentCost: number; currentDir: Dir; currentTiles: Set<string> }[];
+  }
+
+  pushQueue(
+    queue: { currentPosition: Position; currentCost: number; currentDir: Dir; currentTiles: Set<string> }[],
+    currentPosition: Position,
+    currentCost: number,
+    currentDir: Dir,
+    currentTiles: (string | Position)[],
+  ): void {
+    queue.push({ currentPosition, currentCost, currentDir, currentTiles: new Set(currentTiles.map((tile) => tile.toString())) });
   }
 
   findShortestPath(): CostTiles {
-    const costs: Map<string, CostTiles> = new Map<string, CostTiles>();
-    costs.set(this.start.toString(), { cost: 1, tiles: new Set<string>(this.start.toString()) });
+    const costs = this.initCosts();
+    const queue = this.initQueue();
 
-    const queue: [Position, number, Dir, Set<string>][] = [[this.start, 1, Dir.Right, new Set<string>([this.start.toString()])]];
+    const startDir = Dir.Right;
+    const { cost, tiles } = this.addCost(costs, this.start, startDir, 1, this.start);
+
+    this.pushQueue(queue, this.start, cost, startDir, [...tiles]);
 
     while (queue.length) {
-      const [currentPosition, currentCost, currentDir, currentTiles] = queue.shift()!;
+      const { currentPosition, currentCost, currentDir, currentTiles } = queue.shift()!;
 
-      for (const [nextPosition, nextDirectCost, nextDir] of this.getNeighbors(currentPosition, currentDir)) {
-        const nextKey = nextPosition.toString();
+      for (const { nextPosition, nextDirectCost, nextDir } of this.getNeighbors(currentPosition, currentDir)) {
         const nextCost = currentCost + nextDirectCost;
 
-        const savedCost = costs.get(nextKey)?.cost ?? Infinity;
+        const savedCost = this.getCost(costs, nextPosition, nextDir)?.cost ?? Infinity;
         if (nextCost < savedCost) {
-          const tiles = new Set<string>([...currentTiles, nextKey.toString()]);
-          queue.push([nextPosition, nextCost, nextDir, tiles]);
-          costs.set(nextKey, { cost: currentCost, tiles });
+          const { cost, tiles } = this.addCost(costs, nextPosition, nextDir, nextCost, ...[...currentTiles, nextPosition]);
+          this.pushQueue(queue, nextPosition, cost, nextDir, [...tiles]);
         }
       }
     }
 
-    return costs.get(this.end.toString())!;
+    return directions
+      .map((dir) => this.getCost(costs, this.end, dir))
+      .filter((cost) => cost !== undefined)
+      .reduce((minCost, cost) => {
+        if (cost!.cost < minCost.cost) {
+          return cost!;
+        }
+        return minCost;
+      });
   }
 
-  drawPath(tiles: Set<string>): string {
-    let res = '';
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const pos = [x, y].toString();
-        res += tiles.has(pos) ? 'O' : this.grid[y][x] === Cell.W ? '#' : '.';
-      }
-      res += '\n';
-    }
-    return res;
-  }
+  // drawPath(tiles: Set<string>): string {
+  //   let res = '';
+  //   for (let y = 0; y < this.height; y++) {
+  //     for (let x = 0; x < this.width; x++) {
+  //       const pos = [x, y].toString();
+  //       res += tiles?.has(pos) ? 'O' : this.grid[y][x] === Cell.Wall ? '#' : '.';
+  //     }
+  //     res += '\n';
+  //   }
+  //   return res;
+  // }
 }
 
 type Data = Grid;
@@ -157,26 +182,21 @@ export class Day16 implements DaySolution<Data, number> {
 
   parseData(dataLabel: 'Example' | 'Input'): Grid {
     return new Grid(
-      parseLines(parseData(this.day, dataLabel), (line) => line.split('').map(charToCell)),
+      parseLines(
+        parseData(
+          this.day,
+          dataLabel,
+        ),
+        (line) => line.split('').map(charToCell),
+      ),
     );
   }
 
   part1(data: Data): number {
-    return data.findShortestPath().cost;
+    return data.findShortestPath()?.cost ?? -1;
   }
 
   part2(data: Data): number {
-    const tilesList = Directions
-      .map((directions) => {
-        data.directions = directions;
-        return data.findShortestPath().tiles;
-      });
-
-    const res = new Set<string>();
-    tilesList.forEach((tiles) => {
-      tiles.forEach(tile => res.add(tile));
-    });
-
-    return res.size;
+    return data.findShortestPath()?.tiles.size ?? -1;
   }
 }
